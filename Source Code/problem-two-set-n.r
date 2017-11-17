@@ -1,12 +1,11 @@
-options(echo=TRUE)
-
-require("randomForest")
-
 args <- commandArgs(trailingOnly=TRUE)
 
+library(randomForest)
 if (args[1] == 2 || args[1] == 4) {
-	require("Hmisc")
+	library(Hmisc)
 }
+
+options(echo=TRUE)
 
 labelFile <- paste("TrainLabel", args[1], ".txt", sep="")
 trainFile <- paste("TrainData", args[1], ".txt", sep="")
@@ -34,7 +33,7 @@ if (args[1] == 2 || args[1] == 4) {
 	}
 }
 
-forest <- randomForest(train[,1:length(train)], y=label, keep.tree=TRUE, xtest=test[,1:length(test)])
+forest <- randomForest(train[,1:length(train)], y=label, xtest=test[,1:length(test)])
 
 outputFile <- paste("FerreiraClassification", args[1], ".txt", sep="")
 

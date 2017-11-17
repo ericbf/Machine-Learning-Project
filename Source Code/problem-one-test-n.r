@@ -1,5 +1,6 @@
 args <- commandArgs(trailingOnly=TRUE)
-require("randomForest")
+library(randomForest)
+
 options(echo=TRUE)
 
 for (i in 1:5) {
@@ -9,7 +10,7 @@ for (i in 1:5) {
 	train <- read.table(learnFile)
 	test <- read.table(testFile)
 	
-	train.rf <- randomForest(train[,1:2], y=train[,3], keep.forest=TRUE, corr.bias=TRUE, xtest=test[,1:2], ytest=test[,3])
+	train.rf <- randomForest(train[,1:2], y=train[,3], corr.bias=TRUE, xtest=test[,1:2], ytest=test[,3])
 
 	mse <- mean(unlist(train.rf["mse"]))
 	rsq <- mean(unlist(train.rf["rsq"]))
