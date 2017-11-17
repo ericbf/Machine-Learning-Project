@@ -52,12 +52,6 @@ func readFrom(_ file: String) -> String? {
 	#endif
 }
 
-if let wd = CommandLine.arguments[safe: 1] {
-	FileManager.default.changeCurrentDirectoryPath("/Users/eric/Documents/Academic/2017-2018/Fall/Machine Learning/Project/Source Code")
-	print("Changed working directory to \(wd)")
-	print()
-}
-
 #if os(Linux)
 	srandom(UInt32(time(nil)))
 #endif
@@ -119,12 +113,35 @@ func prompt(_ menus: Menu..., loop: Bool = false) -> Next {
 }
 
 func runRscript(_ args: String...) -> Next {
-	return prompt(Menu(printMenu: {
-		let joined = args.map { "\"\($0)\"" }.joined(separator: " ")
+	let task = Process()
+	
+	task.launchPath = "Rscript-proxy.sh"
+	task.arguments = args
+	
+	let standard = Pipe()
+	let error = Pipe()
+	
+	task.standardOutput = standard
+	task.standardError = error
+	
+	task.launch()
+	task.waitUntilExit()
+	
+	if let errorText = String(data: error.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), errorText.count > 0 {
+		print("There was an error during the automatic execution of the R script:")
+		print("-- \(errorText) --")
+		print("Let's try this the old fashioned way...")
+		print()
 		
-		print("Please open a terminal in the \"Source Code\" directory and run: Rscript \(joined)")
-		print("When it is done executing, please return here and hit enter", terminator: "")
-	}, isValid: {_ in true}, action: {_ in .next}))
+		return prompt(Menu(printMenu: {
+			let joined = args.map { "\"\($0)\"" }.joined(separator: " ")
+			
+			print("Please open a terminal in the \"Source Code\" directory and run: Rscript \(joined)")
+			print("When it is done executing, please return here and hit enter", terminator: "")
+		}, isValid: {_ in true}, action: {_ in .next}))
+	}
+
+	return .next
 }
 
 _ = prompt(Menu(printMenu: {

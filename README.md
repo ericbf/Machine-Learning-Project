@@ -23,7 +23,7 @@
 * [`Swift`](https://swift.org)
 * [`R`](https://www.r-project.org)
 
-##### Install `R` packages
+##### Install R packages
 
 * [`randomForest`](https://cran.r-project.org/web/packages/randomForest/)
 * [`Hmisc`](https://cran.r-project.org/web/packages/Hmisc/)
@@ -31,5 +31,6 @@
 #### Running the Project
 
 1. Open a terminal in the `Source Code` directory in the project folder.
+1. You may need to give executable permissions to the `Rscript-proxy.sh` file. Do this by running `chmod 755 Rscript-proxy.sh`.
 1. Run `swift run` to build and run the project.
 1. Follow the prompts in the terminal window.

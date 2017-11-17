@@ -21,11 +21,13 @@ func problemThree() -> Next {
 		
 		let result = runRscript("problem-three-predict.r")
 		
-		if result == .next {
-			print("Succesfully wrote classification to \"FerreiraMultLabelClassification1.txt\"")
-			print()
+		if result != .next {
+			return .last
 		}
 		
-		return result
+		print("Succesfully wrote classification to \"FerreiraMultLabelClassification1.txt\"")
+		print()
+		
+		return .next
 	}))
 }

@@ -18,6 +18,17 @@ func problemTwo() -> Next {
 	}, action: {datasetString in
 		set = Int(datasetString)!
 		
+		return .next
+	}), Menu(printMenu: {
+		print("Preform prediction of labels for classification of set \(set)?")
+		print("Type y/n", terminator: "")
+	}, isValid: {choice in
+		return choice == "y" || choice == "n"
+	}, action: {choice in
+		if choice == "n" {
+			return .last
+		}
+		
 		if FileManager.default.fileExists(atPath: "FerreiraClassification\(set).txt") {
 			let override = prompt(Menu(printMenu: {
 				print("The test labels have already been generated for this set...")
@@ -26,26 +37,28 @@ func problemTwo() -> Next {
 				return input == "y" || input == "n"
 			}, action: {choice in
 				switch choice {
-					case "y":
+				case "y":
 					return .next
-					default:
+				default:
 					return .last
 				}
 			}))
 			
 			if override == .same {
-				return override
+				return .last
 			}
 		}
 		
-		if runRscript("problem-two-set-n.r", "\(set)") == .last {
-			return .same
+		let result = runRscript("problem-two-set-n.r", "\(set)")
+		
+		if result != .next {
+			return .last
 		}
 		
 		do {
 			return try finishUpSet(set)
 		} catch {
-			return .same
+			return .last
 		}
 	}), loop: true)
 }
