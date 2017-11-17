@@ -118,10 +118,8 @@ func runRscript(_ args: String...) -> Next {
 	task.launchPath = "Rscript-proxy.sh"
 	task.arguments = args
 	
-	let standard = Pipe()
 	let error = Pipe()
 	
-	task.standardOutput = standard
 	task.standardError = error
 	
 	task.launch()
