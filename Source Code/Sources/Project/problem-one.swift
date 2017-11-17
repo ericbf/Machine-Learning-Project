@@ -169,8 +169,6 @@ private func predict(_ dataset: Int) throws -> () throws -> Void {
 		
 		let results = resultsString
 			.split(separator: "\n")
-			.dropFirst()
-			.map {$0.split(separator: " ").filter {String($0) != ""}[1]}
 			.map {Decimal(string: String($0))}
 		
 		let predicted = unknowns.enumerated().map {i, item in

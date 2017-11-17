@@ -55,37 +55,9 @@ func problemTwo() -> Next {
 			return .last
 		}
 		
-		do {
-			return try finishUpSet(set)
-		} catch {
-			return .last
-		}
-	}), loop: true)
-}
-
-private func finishUpSet(_ set: Int) throws -> Next {
-	guard let prediction = readFrom("FerreiraClassification\(set).txt") else {
-		print("Set file not found! Are you in the right directory? Did you run the R script?")
+		print("Successfully written predicted labels to \"FerreiraClassification\(set).txt\"")
 		print()
 		
-		throw "File Not Found"
-	}
-	
-	let results = prediction
-		.split(separator: "\n")
-		.dropFirst()
-		.map { $0.split(separator: " ").filter { $0 != "" }[1] }
-		.joined(separator: "\n")
-	
-	do {
-		try results.write(toFile: "FerreiraClassification\(set).txt", atomically: false, encoding: .utf8)
-	} catch {
-		print("Error writing back to file: ", error)
-		exit(-1)
-	}
-	
-	print("Successfully written predicted labels to \"FerreiraClassification\(set).txt\"")
-	print()
-	
-	return .next
+		return .next
+	}), loop: true)
 }

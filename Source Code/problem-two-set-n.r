@@ -38,5 +38,5 @@ forest <- randomForest(train[,1:length(train)], y=label, xtest=test[,1:length(te
 outputFile <- paste("FerreiraClassification", args[1], ".txt", sep="")
 
 sink(outputFile)
-as.matrix(unlist(forest["test"])[1:length(test[,1])])
+write.table(as.integer(forest$test$predicted), col.names=FALSE, row.names=FALSE)
 sink()

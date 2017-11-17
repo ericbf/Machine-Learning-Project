@@ -127,7 +127,7 @@ func runRscript(_ args: String...) -> Next {
 	task.launch()
 	task.waitUntilExit()
 	
-	if let errorText = String(data: error.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), errorText.count > 0 {
+	if let errorText = String(data: error.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), errorText.count > 0 && task.terminationStatus != 0 {
 		print("There was an error during the automatic execution of the R script:")
 		print("-- \(errorText) --")
 		print("Let's try this the old fashioned way...")
